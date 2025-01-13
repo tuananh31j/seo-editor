@@ -8,6 +8,7 @@ import {
   Loader,
   Skeleton,
   Stack,
+  NumberInput,
 } from "@mantine/core";
 import { useCreateBlockNote } from "@blocknote/react";
 import { BlockNoteSchema, defaultBlockSpecs } from "@blocknote/core";
@@ -16,8 +17,12 @@ import { SideMenuController } from "@blocknote/react";
 import "@blocknote/mantine/style.css";
 import "./App.css";
 
+const apiUrl = import.meta.env.VITE_API_URL;
+
 export default function App() {
   const [title, setTitle] = useState("");
+  const [tone, setTone] = useState("Professional and informative");
+  const [wordCount, setWordCount] = useState<number>(1500);
   const [keywords, setKeywords] = useState("");
   const [loading, setLoading] = useState(false);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -60,10 +65,9 @@ export default function App() {
       title: title,
       thesis: [],
       keywords: keywordsArray,
-      tone: "Professional and informative",
-      word_count: 1500,
+      tone,
+      word_count: wordCount,
     };
-
     const headings: string[] = editor.document
       .map((block) => {
         if (
@@ -78,7 +82,7 @@ export default function App() {
     body.thesis = headings;
 
     try {
-      const response = await fetch("http://localhost:8080/api/v1/content", {
+      const response = await fetch(apiUrl, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -87,7 +91,6 @@ export default function App() {
       });
 
       const data = await response.json();
-      console.log(data.content);
       const blocksFromMarkdown = await editor.tryParseMarkdownToBlocks(
         data.content
       );
@@ -129,11 +132,54 @@ export default function App() {
               onChange={(e) => setTitle(e.target.value)}
             />
             <TextInput
-              className="text-red-500"
+              placeholder="Tone...(default: Professional and informative)"
+              value={tone}
+              variant="unstyled"
+              className="text-[#d8d2d1] text-4xl"
+              size={"xl"}
+              style={{
+                marginTop: "10px",
+                color: "#d8d2d1",
+                fontSize: 100,
+                placeholder: {
+                  fontSize: 100,
+                  fontStyle: "italic",
+                },
+              }}
+              onChange={(e) => setTone(e.target.value)}
+            />
+            <NumberInput
+              placeholder="word count...(default: 1500)"
+              value={wordCount}
+              variant="unstyled"
+              className="text-[#d8d2d1] text-4xl"
+              size={"xl"}
+              style={{
+                marginTop: "10px",
+                color: "#d8d2d1",
+                fontSize: 100,
+                placeholder: {
+                  fontSize: 100,
+                  fontStyle: "italic",
+                },
+              }}
+              onChange={(e) => setWordCount(Number(e))}
+            />
+            <TextInput
+              variant="unstyled"
               placeholder="Keywords..."
               value={keywords}
+              className="text-[#d8d2d1] text-4xl"
               onChange={(e) => setKeywords(e.target.value)}
-              style={{ marginTop: "10px" }}
+              style={{
+                marginTop: "10px",
+                color: "#d8d2d1",
+                fontSize: 100,
+                placeholder: {
+                  fontSize: 100,
+                  fontStyle: "italic",
+                },
+              }}
             />
             <Button
               onClick={handleSubmit}
@@ -158,7 +204,7 @@ export default function App() {
               }}
               disabled={loading || !title || !keywords} // Disable nút nếu đang tải hoặc thiếu dữ liệu
             >
-              {loading ? <Loader color={"white"} size="sm" /> : "Submit"}
+              {loading ? <Loader color={"white"} size="sm" /> : "AI Generate"}
               {loading || !title || !keywords ? null : (
                 <div className="shine" />
               )}
