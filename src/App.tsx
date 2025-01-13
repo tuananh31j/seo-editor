@@ -75,11 +75,7 @@ export default function App() {
     };
     const headings: string[] = editor.document
       .map((block) => {
-        if (
-          block.type === "heading" &&
-          block.content.length > 0 &&
-          block.content[0].type === "text"
-        ) {
+        if (block.content.length > 0 && block.content[0].type === "text") {
           return block.content[0].text;
         }
       })
@@ -170,7 +166,7 @@ export default function App() {
                 background:
                   title && keywords
                     ? "linear-gradient(45deg, #ff007f, #7f00ff, #00c9ff)"
-                    : "gray", // Gradient nếu có dữ liệu
+                    : "gray",
                 color: "#fff",
                 fontWeight: "bold",
                 borderRadius: "12px",
@@ -182,9 +178,9 @@ export default function App() {
                 overflow: "hidden",
                 boxShadow: "0 4px 10px rgba(0, 0, 0, 0.2)",
                 textTransform: "uppercase",
-                opacity: title && keywords ? 1 : 0.5, // Giảm opacity nếu thiếu dữ liệu
+                opacity: title && keywords ? 1 : 0.5,
               }}
-              disabled={loading || !title || !keywords} // Disable nút nếu đang tải hoặc thiếu dữ liệu
+              disabled={loading || !title || !keywords}
             >
               {loading ? <Loader color={"white"} size="sm" /> : "AI Generate"}
               {loading || !title || !keywords ? null : (
