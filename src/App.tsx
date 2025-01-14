@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useState } from "react";
 import {
   AppShell,
@@ -30,21 +29,11 @@ export default function App() {
   const [loading, setLoading] = useState(false);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [blocks, setBlocks] = useState<any>();
-  const {
-    audio,
-    image,
-    bulletListItem,
-    checkListItem,
-    codeBlock,
-    file,
-    numberedListItem,
-    table,
-    video,
-    ...block
-  } = defaultBlockSpecs;
+  const { paragraph, heading } = defaultBlockSpecs;
   const schema = BlockNoteSchema.create({
     blockSpecs: {
-      ...block,
+      paragraph,
+      heading,
     },
   });
 
