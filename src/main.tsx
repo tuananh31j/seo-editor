@@ -4,6 +4,7 @@ import App from "./App.tsx";
 import { MantineProvider } from "@mantine/core";
 import "./index.css";
 import "@mantine/core/styles.css";
+import { ToastContainer } from "react-toastify";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -14,6 +15,7 @@ createRoot(document.getElementById("root")!).render(
       deduplicateCssVariables
     >
       <App />
+      <ToastContainer />
     </MantineProvider>
   </StrictMode>
 );

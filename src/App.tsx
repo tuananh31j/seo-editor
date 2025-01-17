@@ -26,6 +26,7 @@ import "./App.css";
 import { useDocumentTitle, useScrollIntoView } from "@mantine/hooks";
 import { IconTrash } from "@tabler/icons-react";
 import { useForm } from "@mantine/form";
+import { toast } from "react-toastify";
 
 const apiUrl = import.meta.env.VITE_API_URL;
 const initValues = {
@@ -38,6 +39,7 @@ const initValues = {
 };
 export default function App() {
   useDocumentTitle("AI Editor");
+  const notify = () => toast.error("Something wrong!");
   const { scrollIntoView, targetRef } = useScrollIntoView<HTMLDivElement>({
     offset: 60,
   });
@@ -66,7 +68,7 @@ export default function App() {
       ? form.getValues().sections.map((item, index) => (
           <Group key={item} mt="xs">
             <TextInput
-              placeholder="John Doe"
+              placeholder="Heading..."
               withAsterisk
               style={{ flex: 1 }}
               key={form.key(`sections.${index}.name`)}
@@ -105,11 +107,11 @@ export default function App() {
       });
 
       const data = await response.json();
-
       setBlocks(data.content);
     } catch (error) {
       setLoading(false);
       console.error("Error:", error);
+      notify();
     } finally {
       setLoading(false);
     }
@@ -204,6 +206,7 @@ export default function App() {
                 gap: "20px",
                 bottom: "20px",
                 right: "20px",
+                zIndex: 1000,
               }}
             >
               <Button
